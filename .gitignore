@@ -15,8 +15,6 @@
 .env.local
 .env.production
 .env.development
-config.toml
-**/config.toml
 **/.env
 **/.env.local
 **/.env.production

@@ -116,7 +116,7 @@ impl Config {
     pub fn load() -> Result<Self> {
         let env = std::env::var("RUN_ENV").unwrap_or_else(|_| "development".to_string());
 
-        let config = ConfigBuilder::builder()
+        let mut builder = ConfigBuilder::builder()
             // Start with default config file
             .add_source(File::with_name("config").required(false))
             // Add environment-specific config file
@@ -127,7 +127,33 @@ impl Config {
                 Environment::with_prefix("APP")
                     .separator("__")
                     .try_parsing(true),
-            )
+            );
+
+        // --- Bare env var overrides (Render / Railway / Heroku style) ---
+        //
+        // These override whatever config.toml or APP_ vars provided, so hosting
+        // platforms that inject DATABASE_URL / RPC_ENDPOINTS directly (without
+        // the APP_ prefix) work out of the box.
+
+        if let Ok(db_url) = std::env::var("DATABASE_URL") {
+            builder = builder
+                .set_override("database.url", db_url)
+                .context("Failed to override database.url from DATABASE_URL")?;
+        }
+
+        if let Ok(rpc_raw) = std::env::var("RPC_ENDPOINTS") {
+            // Accept comma-separated list: "https://a/,https://b/"
+            let endpoints: Vec<String> = rpc_raw
+                .split(',')
+                .map(|s| s.trim().to_string())
+                .filter(|s| !s.is_empty())
+                .collect();
+            builder = builder
+                .set_override("rpc.endpoints", endpoints)
+                .context("Failed to override rpc.endpoints from RPC_ENDPOINTS")?;
+        }
+
+        let config = builder
             .build()
             .context("Failed to build configuration")?;
 
@@ -258,7 +284,7 @@ impl Config {
     fn validate_rpc(&self) -> Result<()> {
         anyhow::ensure!(
             !self.rpc.endpoints.is_empty(),
-            "RPC endpoints list cannot be empty"
+            "RPC endpoints list cannot be empty — set the RPC_ENDPOINTS or APP_RPC__ENDPOINTS environment variable"
         );
 
         for endpoint in &self.rpc.endpoints {
@@ -287,7 +313,7 @@ impl Config {
     fn validate_database(&self) -> Result<()> {
         anyhow::ensure!(
             !self.database.url.is_empty(),
-            "Database URL cannot be empty"
+            "Database URL cannot be empty — set the DATABASE_URL or APP_DATABASE__URL environment variable"
         );
 
         anyhow::ensure!(
