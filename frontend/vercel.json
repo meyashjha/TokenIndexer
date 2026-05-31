@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://your-backend-app.onrender.com/api/:path*"
+      "destination": "https://tokenindexer-backend.onrender.com/api/:path*"
     },
     {
       "source": "/((?!api|assets|tokenindexer\\.png).*)*",
