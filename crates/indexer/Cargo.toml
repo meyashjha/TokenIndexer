@@ -1,0 +1,52 @@
+[package]
+name = "solana-indexer"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+[dependencies]
+# Web framework
+actix.workspace = true
+actix-web.workspace = true
+actix-web-actors.workspace = true
+actix-rt.workspace = true
+
+# Async runtime
+tokio.workspace = true
+
+# Database
+sqlx.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+
+# Solana
+solana-client.workspace = true
+solana-sdk.workspace = true
+solana-transaction-status.workspace = true
+
+# Logging and tracing
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+# Configuration
+config.workspace = true
+dotenvy.workspace = true
+
+# Error handling
+anyhow.workspace = true
+thiserror.workspace = true
+
+# Utilities
+chrono.workspace = true
+uuid.workspace = true
+async-trait.workspace = true
+
+# Metrics
+prometheus.workspace = true
+
+[dev-dependencies]
+proptest.workspace = true
+mockall.workspace = true

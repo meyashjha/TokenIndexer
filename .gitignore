@@ -1,0 +1,40 @@
+# Rust
+/target/
+**/*.rs.bk
+*.pdb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment & Secrets
+.env
+.env.local
+.env.production
+.env.development
+config.toml
+**/config.toml
+**/.env
+**/.env.local
+**/.env.production
+**/.env.production.local
+**/.env.development.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+
+# Frontend build & packages
+frontend/node_modules/
+frontend/dist/
+frontend/.next/

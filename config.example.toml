@@ -1,0 +1,49 @@
+# Example configuration for Solana Three-Tier Token Indexer
+# Copy this file to config.toml and adjust values as needed
+
+[scout]
+polling_interval_secs = 5
+pumpfun_program_id = "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P"
+raydium_program_id = "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8"
+
+[hunter]
+polling_interval_secs = 30
+token_maturity_minutes = 1
+early_buyer_window_secs = 60
+max_signatures_per_token = 50
+whale_win_rate_threshold = 0.70
+whale_roi_threshold = 3.0
+
+[shadow]
+polling_interval_secs = 2
+max_concurrent_wallets = 500
+
+[rpc]
+endpoints = [
+    "https://api.mainnet-beta.solana.com",
+    "https://solana-api.projectserum.com"
+]
+timeout_secs = 30
+max_retries = 3
+
+[database]
+url = "postgresql://postgres:postgres@localhost:5432/whale_tracker"
+max_connections = 20
+min_connections = 5
+connection_timeout_secs = 30
+
+[api]
+host = "0.0.0.0"
+port = 8080
+rate_limit_requests = 100
+rate_limit_window_secs = 60
+
+[websocket]
+host = "0.0.0.0"
+port = 8081
+max_connections = 1000
+heartbeat_interval_secs = 30
+
+[logging]
+level = "info"
+format = "Json"
